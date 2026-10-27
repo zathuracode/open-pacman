@@ -66,14 +66,18 @@ function drawDoor( ctx, grid ) {
   ctx.stroke();
 }
 
-function drawDots( ctx, grid ) {
+function drawDots( ctx, grid, frame ) {
   ctx.fillStyle = DOT_COLOR;
+  // Energizante (tile 4): dot grande de radio 6, visible/oculto cada ~15 frames.
+  const energizerVisible = Math.floor( frame / 15 ) % 2 === 0;
   for ( let y = 0; y < grid.length; y++ ) {
     for ( let x = 0; x < grid[ 0 ].length; x++ ) {
-      if ( grid[ y ][ x ] !== 2 ) continue;
+      const v = grid[ y ][ x ];
+      if ( v !== 2 && v !== 4 ) continue;
+      if ( v === 4 && !energizerVisible ) continue;
       const { cx, cy } = cellCenter( x, y );
       ctx.beginPath();
-      ctx.arc( cx, cy, 2.5, 0, Math.PI * 2 );
+      ctx.arc( cx, cy, v === 4 ? 6 : 2.5, 0, Math.PI * 2 );
       ctx.fill();
     }
   }
@@ -98,27 +102,8 @@ function drawPacman( ctx, p, frame ) {
   ctx.fill();
 }
 
-function drawGhost( ctx, g, color ) {
-  const { cx, cy } = cellCenter( g.x, g.y );
-  const r = TILE / 2 - 1;
-  const top = cy - r;
-  const bottom = cy + r;
-  const left = cx - r;
-  const right = cx + r;
-
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc( cx, cy - 1, r, Math.PI, 0, false ); // cabeza
-  ctx.lineTo( right, bottom );
-  // falda ondulada (3 picos)
-  ctx.lineTo( right - r * 0.66, bottom - 4 );
-  ctx.lineTo( cx, bottom );
-  ctx.lineTo( left + r * 0.66, bottom - 4 );
-  ctx.lineTo( left, bottom );
-  ctx.closePath();
-  ctx.fill();
-
-  // ojos mirando segun direccion
+// Los dos ojos mirando segun la direccion del fantasma.
+function drawGhostEyes( ctx, g, cx, cy ) {
   const dir = DIRS[ g.dir ] || { x: 0, y: 0 };
   const ex = dir.x * 1.6;
   const ey = dir.y * 1.6;
@@ -134,6 +119,44 @@ function drawGhost( ctx, g, color ) {
   }
 }
 
+function drawGhost( ctx, g, game, frame ) {
+  const { cx, cy } = cellCenter( g.x, g.y );
+
+  // Modo ojos: solo los dos ojos, sin cuerpo.
+  if ( g.mode === 'eyes' ) {
+    drawGhostEyes( ctx, g, cx, cy );
+    return;
+  }
+
+  const r = TILE / 2 - 1;
+  const bottom = cy + r;
+  const left = cx - r;
+  const right = cx + r;
+
+  let color = GHOST_COLORS[ g.kind ] || '#ff0000';
+  if ( g.frightened ) {
+    // Asustado: cuerpo azul; en los ultimos ~2 s alterna azul/blanco cada
+    // ~16 frames.
+    const blinking =
+      game.frightTimer <= BLINK_FRAMES && Math.floor( frame / 16 ) % 2 === 1;
+    color = blinking ? '#ffffff' : '#2121de';
+  }
+
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc( cx, cy - 1, r, Math.PI, 0, false ); // cabeza
+  ctx.lineTo( right, bottom );
+  // falda ondulada (3 picos)
+  ctx.lineTo( right - r * 0.66, bottom - 4 );
+  ctx.lineTo( cx, bottom );
+  ctx.lineTo( left + r * 0.66, bottom - 4 );
+  ctx.lineTo( left, bottom );
+  ctx.closePath();
+  ctx.fill();
+
+  drawGhostEyes( ctx, g, cx, cy );
+}
+
 function drawHUD( ctx, game, W ) {
   ctx.fillStyle = '#fff';
   ctx.font = '14px "Courier New", monospace';
@@ -144,7 +167,13 @@ function drawHUD( ctx, game, W ) {
   ctx.fillText( 'VIDAS ' + game.lives, W * TILE - 8, 4 );
 }
 
-const GHOST_COLORS = [ '#ff0000', '#00ffff', '#ffb8ff', '#ffb852' ];
+// Color por kind (clasicos del arcade): rojo, rosa, cian, naranja.
+const GHOST_COLORS = {
+  blinky: '#ff0000',
+  pinky: '#ffb8ff',
+  inky: '#00ffff',
+  clyde: '#ffb852',
+};
 
 function draw( ctx, game, frame ) {
   const grid = game.grid;
@@ -156,9 +185,9 @@ function draw( ctx, game, frame ) {
 
   drawWalls( ctx, grid );
   drawDoor( ctx, grid );
-  drawDots( ctx, grid );
+  drawDots( ctx, grid, frame );
   drawPacman( ctx, game.pacman, frame );
-  game.ghosts.forEach( ( g, i ) => drawGhost( ctx, g, GHOST_COLORS[ i ] || '#ff0000' ) );
+  game.ghosts.forEach( ( g ) => drawGhost( ctx, g, game, frame ) );
   drawHUD( ctx, game, W );
 }
 

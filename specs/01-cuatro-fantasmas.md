@@ -217,6 +217,26 @@ Colisiones en `update()`:
   Complejidad extra sin diferencia perceptible en un juego de un solo nivel.
 - **Sí:** salidas escalonadas por tiempo (0/3/6/9 s).
 - **No:** goteo por dots comidos (0/5/30/60). Difícil de calibrar y verificar.
+- **Sí:** en la salida de la casa, la pata horizontal hacia x=13 ocurre a la
+  altura en que el vaivén dejó al fantasma (banda y 13–15) y luego sube
+  directo por la puerta; no se fuerza el paso por la fila 14 exacta.
+  Decisión de implementación del paso 5: el vaivén libera a cada fantasma a
+  una `y` arbitraria y el spec no definía cómo llegar a la fila 14.
+- **Sí:** puerta de un solo sentido: la casa (tile 3) es muro para Pacman y
+  para los fantasmas normales y asustados; solo los ojos la cruzan al volver.
+  Decisión de implementación del paso 5: con la puerta abierta, un fantasma
+  cuyo objetivo quedara debajo de la casa re-entraba y quedaba atrapado
+  dentro (590/600 frames en la simulación).
+- **Sí:** aterrizar en el centro de la celda cruzada cuando la velocidad no
+  es 1/n (0.06 y 0.15). Con las constantes exactas del spec el actor cruza
+  los centros entre frames y nunca se alinea para decidir; con el
+  aterrizaje, el motor de decisiones por celda sigue funcionando. Decisión
+  de implementación de los pasos 6–7.
+- **Sí:** la bajada final de los ojos desde la puerta (13,12) hasta la celda
+  de revivir (13,14) es fija (scriptada). El greedy hacia la puerta no
+  desciende dentro de la casa: en (13,13) las salidas laterales quedan a
+  distancia 2 y (13,14) a 4, así que los ojos orbitarían el interior sin
+  revivir jamás. Decisión de implementación del paso 7.
 - **Sí:** energizantes y modo asustado dentro de este spec (decisión explícita
   del usuario).
 - **Sí:** movimiento asustado al azar en cruces, como el arcade.

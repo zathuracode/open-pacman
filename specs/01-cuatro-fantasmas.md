@@ -1,6 +1,6 @@
 # SPEC 01 — Los cuatro fantasmas con personalidad propia
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** Ninguna
 > **Fecha:** 2026-10-27
 > **Objetivo:** Añadir los cuatro fantasmas clásicos del arcade, cada uno con su
@@ -185,26 +185,26 @@ Colisiones en `update()`:
 
 ## Criterios de aceptación
 
-- [ ] El juego carga sin errores de consola.
-- [ ] Se ven 4 fantasmas con colores distintos: rojo, rosa, cian y naranja.
-- [ ] Blinky traza directo hacia Pacman durante la caza (el agresivo).
-- [ ] Pinky apunta 4 celdas por delante de la dirección de Pacman.
-- [ ] El rumbo de Inky depende de la posición de Blinky.
-- [ ] Clyde persigue a distancia y se retira a su esquina al acercarse.
-- [ ] Los fantasmas alternan ~7 s de dispersión y ~20 s de caza, e invierten
+- [x] El juego carga sin errores de consola.
+- [x] Se ven 4 fantasmas con colores distintos: rojo, rosa, cian y naranja.
+- [x] Blinky traza directo hacia Pacman durante la caza (el agresivo).
+- [x] Pinky apunta 4 celdas por delante de la dirección de Pacman.
+- [x] El rumbo de Inky depende de la posición de Blinky.
+- [x] Clyde persigue a distancia y se retira a su esquina al acercarse.
+- [x] Los fantasmas alternan ~7 s de dispersión y ~20 s de caza, e invierten
       dirección al cambiar de fase.
-- [ ] Blinky empieza fuera; Pinky, Inky y Clyde salen escalonados cada ~3 s.
-- [ ] Los 4 energizantes se dibujan como dots grandes parpadeantes.
-- [ ] Comer un energizante suma 50 y los fantasmas se vuelven azules, lentos y
+- [x] Blinky empieza fuera; Pinky, Inky y Clyde salen escalonados cada ~3 s.
+- [x] Los 4 energizantes se dibujan como dots grandes parpadeantes.
+- [x] Comer un energizante suma 50 y los fantasmas se vuelven azules, lentos y
       erráticos.
-- [ ] El efecto dura ~6 s y los últimos ~2 s parpadean azul/blanco.
-- [ ] Comer fantasmas asustados suma 200/400/800/1600 en cadena.
-- [ ] El fantasma comido se dibuja como ojos, regresa a la casa, revive y vuelve
+- [x] El efecto dura ~6 s y los últimos ~2 s parpadean azul/blanco.
+- [x] Comer fantasmas asustados suma 200/400/800/1600 en cadena.
+- [x] El fantasma comido se dibuja como ojos, regresa a la casa, revive y vuelve
       a salir.
-- [ ] Un fantasma en modo ojos atraviesa a Pacman sin efecto.
-- [ ] Perder una vida resetea los 4 fantasmas, el goteo de salidas y el ciclo
+- [x] Un fantasma en modo ojos atraviesa a Pacman sin efecto.
+- [x] Perder una vida resetea los 4 fantasmas, el goteo de salidas y el ciclo
       dispersión/caza.
-- [ ] Comer todos los dots y energizantes gana la partida.
+- [x] Comer todos los dots y energizantes gana la partida.
 
 ## Decisiones
 

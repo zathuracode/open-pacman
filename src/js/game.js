@@ -13,14 +13,19 @@ const OPPOSITE = { left: 'right', right: 'left', up: 'down', down: 'up' };
 const PACMAN_SPEED = 0.125; // 1/8 celda/frame -> alinea cada 8 frames
 const GHOST_SPEED = 0.1;    // 1/10 celda/frame
 
-// Definiciones por kind: esquina de dispersion y frames de espera para
-// salir de la casa.
+// Definiciones por kind: esquina de dispersion.
 const GHOST_DEFS = {
-  blinky: { scatter: { x: 26, y: 1  }, releaseFrames: 0   },
-  pinky:  { scatter: { x: 1,  y: 1  }, releaseFrames: 180 },
-  inky:   { scatter: { x: 26, y: 29 }, releaseFrames: 360 },
-  clyde:  { scatter: { x: 1,  y: 29 }, releaseFrames: 540 },
+  blinky: { scatter: { x: 26, y: 1  } },
+  pinky:  { scatter: { x: 1,  y: 1  } },
+  inky:   { scatter: { x: 26, y: 29 } },
+  clyde:  { scatter: { x: 1,  y: 29 } },
 };
+const RELEASE_MAX_FRAMES = 120; // 2 s de espera maxima
+
+// Retardo de salida: entero en [0, RELEASE_MAX_FRAMES].
+function releaseDelay() {
+  return Math.floor( Math.random() * ( RELEASE_MAX_FRAMES + 1 ) );
+}
 const SCATTER_FRAMES = 420;  // 7 s
 const CHASE_FRAMES   = 1200; // 20 s
 const FRIGHTENED_FRAMES = 360; // 6 s
@@ -30,7 +35,7 @@ const EYES_SPEED        = 0.15; // 1.5 x GHOST_SPEED
 
 // Fantasma recien creado o reseteado: arranque de GHOST_STARTS, modo inicial
 // (el que arranca por encima de la puerta ya esta fuera de la casa) y frame
-// absoluto de salida de la casa (escalera 0/180/360/540).
+// absoluto de salida de la casa.
 function makeGhost( i, frame ) {
   const start = GHOST_STARTS[ i ];
   const def = GHOST_DEFS[ start.kind ];

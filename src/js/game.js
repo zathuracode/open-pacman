@@ -35,19 +35,19 @@ const EYES_SPEED        = 0.15; // 1.5 x GHOST_SPEED
 
 // Fantasma recien creado o reseteado: arranque de GHOST_STARTS, modo inicial
 // (el que arranca por encima de la puerta ya esta fuera de la casa) y frame
-// absoluto de salida de la casa.
+// absoluto de salida de la casa (aleatorio 0-120 para los de la casa).
 function makeGhost( i, frame ) {
   const start = GHOST_STARTS[ i ];
-  const def = GHOST_DEFS[ start.kind ];
+  const inHouse = start.y >= 13;
   return {
     x: start.x,
     y: start.y,
     dir: start.dir,
     speed: GHOST_SPEED,
     kind: start.kind,
-    mode: start.y < 13 ? 'normal' : 'house',
+    mode: inHouse ? 'house' : 'normal',
     frightened: false,
-    releaseAt: frame + def.releaseFrames,
+    releaseAt: inHouse ? frame + releaseDelay() : frame,
   };
 }
 

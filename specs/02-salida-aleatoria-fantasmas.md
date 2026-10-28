@@ -1,6 +1,6 @@
 # SPEC 02 — Salida aleatoria de los fantasmas de la casa
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 01
 > **Fecha:** 2026-10-28
 > **Objetivo:** Que al iniciar la partida y tras cada vida perdida, Pinky, Inky y
@@ -80,19 +80,19 @@ conserva `releaseAt = game.frame + 120`.
 
 ## Criterios de aceptación
 
-- [ ] Al iniciar, Pinky, Inky y Clyde tienen `releaseAt` en `[0, 120]`.
-- [ ] Los tres salen de la casa dentro de los ~2 s de espera más el recorrido por
+- [x] Al iniciar, Pinky, Inky y Clyde tienen `releaseAt` en `[0, 120]`.
+- [x] Los tres salen de la casa dentro de los ~2 s de espera más el recorrido por
       la puerta.
-- [ ] El orden de salida varía entre partidas; no siempre es
+- [x] El orden de salida varía entre partidas; no siempre es
       Pinky → Inky → Clyde.
-- [ ] Al perder una vida se vuelven a sortear retardos ≤120 y ninguno queda
+- [x] Al perder una vida se vuelven a sortear retardos ≤120 y ninguno queda
       encerrado más de 2 s.
-- [ ] Blinky sigue fuera de la casa desde el inicio.
-- [ ] La salida sigue siendo por la puerta central y termina en (13,11) con
+- [x] Blinky sigue fuera de la casa desde el inicio.
+- [x] La salida sigue siendo por la puerta central y termina en (13,11) con
       `dir: 'left'`.
-- [ ] Los fantasmas revividos siguen saliendo a los 120 frames.
-- [ ] No hay regresiones del spec 01 (personalidades, ciclo, miedo, cadena, ojos).
-- [ ] El juego carga sin errores de consola.
+- [x] Los fantasmas revividos siguen saliendo a los 120 frames.
+- [x] No hay regresiones del spec 01 (personalidades, ciclo, miedo, cadena, ojos).
+- [x] El juego carga sin errores de consola.
 
 ## Decisiones
 
